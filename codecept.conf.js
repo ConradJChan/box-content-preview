@@ -41,7 +41,10 @@ if (isLocalBuild) {
             platform: BROWSER_PLATFORM,
             maxDuration: 180,
             commandTimeout: 100,
-            extendedDebugging: true
+            extendedDebugging: true,
+            seleniumVersion: '3.12.0',
+            chromedriverVersion: '2.35',
+            iedriverVersion: '3.4.0'
         }
     };
 

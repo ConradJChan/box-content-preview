@@ -3,13 +3,9 @@ language: node_js
 node_js:
 - '8'
 cache: yarn
-notifications:
-    email:
-        recipients:
-            - preview-alerts@box.com
 aliases:
     - &sauce-labs
-        if: type = cron
+        if: type != cron
         before_script:
         - python -m SimpleHTTPServer &
         - sleep 5
@@ -27,7 +23,6 @@ aliases:
       script: travis_retry yarn run functional-tests-ci --grep @firefox
 jobs:
   include:
-  - script: yarn run ci
   - <<: *sauce-labs
     env: BROWSER_PLATFORM="Windows 10" BROWSER_NAME="MicrosoftEdge"
     script: travis_retry yarn run functional-tests-ci --grep @edge
