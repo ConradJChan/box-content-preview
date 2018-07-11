@@ -8,7 +8,7 @@ const {
     BROWSER_PLATFORM,
     PLATFORM_VERSION,
     DEVICE_NAME,
-    DEFAULT_WAIT_TIME = 90000,
+    DEFAULT_WAIT_TIME = 30000,
     RUN_LOCALLY=false
 } = process.env;
 const MOBILE_PLATFORMS = ['iOS', 'Android'];
@@ -40,11 +40,7 @@ if (isLocalBuild) {
             browserName: BROWSER_NAME,
             platform: BROWSER_PLATFORM,
             maxDuration: 180,
-            commandTimeout: 100,
-            extendedDebugging: true,
-            seleniumVersion: '3.12.0',
-            chromedriverVersion: '2.35',
-            iedriverVersion: '3.4.0'
+            extendedDebugging: true
         }
     };
 
