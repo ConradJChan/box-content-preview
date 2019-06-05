@@ -51,6 +51,22 @@ $spinner-size: 15px;
     }
 }
 
+.bp-working-wrapper {
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-name: fadeIn;
+    background-color: rgba(0, 0, 0, .1);
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .25s opacity, .25s transform;
+}
+
 // Only the loading wrapper should be interactable inside the Preview container
 .bp:not(.bp-loaded) {
     pointer-events: none;
@@ -86,7 +102,7 @@ $spinner-size: 15px;
         transform: scale(1.5);
 
         div {
-            background-color: $downtown-grey;
+            background-color: $box-blue;
         }
     }
 }

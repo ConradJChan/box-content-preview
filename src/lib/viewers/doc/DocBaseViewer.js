@@ -28,7 +28,14 @@ import {
     CLASS_BOX_PREVIEW_THUMBNAILS_OPEN_ACTIVE
 } from '../../constants';
 import { checkPermission, getRepresentation } from '../../file';
-import { appendQueryParams, createAssetUrlCreator, getMidpoint, getDistance, getClosestPageToPinch } from '../../util';
+import {
+    appendQueryParams,
+    createAssetUrlCreator,
+    getMidpoint,
+    getDistance,
+    getClosestPageToPinch,
+    getProp
+} from '../../util';
 import {
     ICON_PRINT_CHECKMARK,
     ICON_ZOOM_OUT,
@@ -1473,6 +1480,88 @@ class DocBaseViewer extends BaseViewer {
 
         // For documents of only 1 page, default thumbnails as closed
         return toggledState && numPages > 1;
+    }
+
+    performOCR() {
+        console.log('performOCR');
+        const { TesseractWorker } = window.Tesseract;
+        const worker = new TesseractWorker();
+        const canvas = this.rootEl.querySelector('#page1');
+        const { width: canvasWidth } = canvas;
+
+        const workingLayer = document.createElement('div');
+        workingLayer.className = 'bp-working-wrapper';
+        workingLayer.innerHTML = `<div class="bp-loading">
+                <div class="bp-crawler-wrapper">
+                    <div class="bp-crawler">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>`;
+        this.containerEl.appendChild(workingLayer);
+        this.previewUI.notification.show('Please wait while parsing the text...', null, true);
+
+        worker
+            .recognize(canvas)
+            .progress((progress) => {
+                console.log('progress', progress);
+            })
+            .then((result) => {
+                workingLayer.remove();
+                this.previewUI.hideNotification();
+
+                console.log('result', result);
+                const ocrLayer = this.createOCRLayer();
+                ocrLayer.addEventListener('click', (e) => {
+                    const text = getProp(e, 'target.dataset.value');
+                    this.emit('metadata-click', text);
+                });
+                const pageDiv = this.rootEl.querySelector('#bp-page-1');
+                const bbox = pageDiv.getBoundingClientRect();
+                ocrLayer.style.width = `${bbox.width}px`;
+                ocrLayer.style.height = `${bbox.height}px`;
+
+                this.renderedCanvasRatio = bbox.width / canvasWidth;
+
+                pageDiv.appendChild(ocrLayer);
+
+                const { words } = result;
+                words.forEach((word) => {
+                    this.drawBoundingBox(ocrLayer, word);
+                });
+            });
+    }
+
+    createOCRLayer() {
+        const ocrLayer = document.createElement('div');
+        ocrLayer.className = 'bp-ocr-layer';
+        return ocrLayer;
+    }
+
+    drawBoundingBox(ocrLayer, word) {
+        const { bbox: { x0, x1, y0, y1 }, text } = word;
+        const height = y1 - y0;
+        const width = x1 - x0;
+
+        if ((x0 === 0 && y0 === 0) || text === '-') {
+            return;
+        }
+
+        const boundingDiv = document.createElement('div');
+        boundingDiv.className = 'bp-bounding-box';
+        boundingDiv.dataset.value = text;
+        boundingDiv.draggable = true;
+        boundingDiv.style.width = `${width * this.renderedCanvasRatio}px`;
+        boundingDiv.style.height = `${height * this.renderedCanvasRatio + 10}px`;
+        boundingDiv.style.top = `${y0 * this.renderedCanvasRatio - 5}px`;
+        boundingDiv.style.left = `${x0 * this.renderedCanvasRatio}px`;
+        boundingDiv.addEventListener('dragstart', (event) => {
+            event.dataTransfer.setData('text/plain', text);
+        });
+
+        ocrLayer.appendChild(boundingDiv);
     }
 }
 

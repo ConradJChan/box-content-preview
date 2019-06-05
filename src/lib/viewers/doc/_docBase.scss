@@ -294,3 +294,21 @@ $thumbnail-sidebar-width: 226px;
 .bp-content.bp-is-fullscreen .bp-toggle-thumbnails-icon {
     display: none;
 }
+
+.bp-ocr-layer {
+    pointer-events: none;
+    position: absolute;
+    top: 15px;
+
+    .bp-bounding-box {
+        background-color: rgba(245, 179, 27, .3);
+        cursor: pointer;
+        padding: 5px 0;
+        pointer-events: auto;
+        position: absolute;
+    }
+
+    .bp-bounding-box:hover {
+        background-color: rgba(245, 179, 27, .7);
+    }
+}
