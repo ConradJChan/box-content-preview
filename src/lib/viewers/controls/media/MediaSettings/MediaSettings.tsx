@@ -5,8 +5,8 @@ import MediaSettingsFlyout from './MediaSettingsFlyout';
 import MediaSettingsMenu from './MediaSettingsMenu';
 import MediaSettingsMenuBack from './MediaSettingsMenuBack';
 import MediaSettingsMenuItem from './MediaSettingsMenuItem';
-import MediaSettingsRadioItem from './MediaSettingsRadioItem';
 import MediaSettingsToggle, { Ref as MediaSettingsToggleRef } from './MediaSettingsToggle';
+import RadioItem from '../../radioitem/RadioItem';
 import { decodeKeydown } from '../../../../util';
 
 export type Props = React.PropsWithChildren<{
@@ -90,4 +90,4 @@ MediaSettings.Context = MediaSettingsContext;
 MediaSettings.Menu = MediaSettingsMenu;
 MediaSettings.MenuBack = MediaSettingsMenuBack;
 MediaSettings.MenuItem = MediaSettingsMenuItem;
-MediaSettings.RadioItem = MediaSettingsRadioItem;
+MediaSettings.RadioItem = RadioItem;

@@ -1,6 +1,6 @@
 import React from 'react';
 import AnimationClipsControl, { Props as AnimationClipsControlProps } from './AnimationClipsControl';
-import PlayPauseToggle, { Props as PlayPauseToggleProps } from '../media/PlayPauseToggle';
+import PlayPauseToggle, { Props as PlayPauseToggleProps } from './PlayPauseToggle';
 import './AnimationControls.scss';
 
 export type Props = AnimationClipsControlProps & PlayPauseToggleProps;

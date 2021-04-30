@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import IconCheckMark24 from '../../icons/IconCheckMark24';
-import { decodeKeydown } from '../../../../util';
-import './MediaSettingsRadioItem.scss';
+import IconCheckMark24 from '../icons/IconCheckMark24';
+import { decodeKeydown } from '../../../util';
+import './RadioItem.scss';
 
 export type Props<V extends Value> = {
     className?: string;
@@ -14,8 +14,9 @@ export type Props<V extends Value> = {
 export type Ref = HTMLDivElement;
 export type Value = boolean | number | string;
 
-function MediaSettingsRadioItem<V extends Value>(props: Props<V>, ref: React.Ref<Ref>): JSX.Element {
+function RadioItem<V extends Value>(props: Props<V>, ref: React.Ref<Ref>): JSX.Element {
     const { className, isSelected, label, onChange, value } = props;
+    const displayValue = label || value;
 
     const handleClick = (): void => {
         onChange(value);
@@ -35,7 +36,7 @@ function MediaSettingsRadioItem<V extends Value>(props: Props<V>, ref: React.Ref
         <div
             ref={ref}
             aria-checked={isSelected ? 'true' : 'false'}
-            className={classNames('bp-MediaSettingsRadioItem', className, {
+            className={classNames('bp-RadioItem', className, {
                 'bp-is-selected': isSelected,
             })}
             onClick={handleClick}
@@ -43,12 +44,14 @@ function MediaSettingsRadioItem<V extends Value>(props: Props<V>, ref: React.Ref
             role="menuitemradio"
             tabIndex={0}
         >
-            <div className="bp-MediaSettingsRadioItem-check">
-                <IconCheckMark24 className="bp-MediaSettingsRadioItem-check-icon" height={16} width={16} />
+            <div className="bp-RadioItem-check">
+                <IconCheckMark24 className="bp-RadioItem-check-icon" height={16} width={16} />
             </div>
-            <div className="bp-MediaSettingsRadioItem-value">{label || value}</div>
+            <div className="bp-RadioItem-value" title={displayValue}>
+                {displayValue}
+            </div>
         </div>
     );
 }
 
-export default React.forwardRef(MediaSettingsRadioItem) as typeof MediaSettingsRadioItem;
+export default React.forwardRef(RadioItem) as typeof RadioItem;

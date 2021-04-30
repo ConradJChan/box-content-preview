@@ -1,0 +1,62 @@
+@import '~box-ui-elements/es/styles/constants/colors';
+@import '~box-ui-elements/es/styles/deprecated';
+
+.bp-RadioItem {
+    display: table-row;
+    overflow: hidden;
+    white-space: nowrap;
+    outline: 0 none;
+    cursor: pointer;
+
+    &.bp-is-selected {
+        .bp-RadioItem-check-icon {
+            visibility: visible;
+        }
+
+        .bp-RadioItem-value {
+            color: $box-blue;
+        }
+    }
+
+    &:hover {
+        background-color: $hover-blue-background;
+
+        .bp-RadioItem-check-icon {
+            fill: $blue-steel;
+        }
+
+        .bp-RadioItem-value {
+            color: $blue-steel;
+        }
+    }
+
+    .bp-is-focused &:focus {
+        background-color: $box-blue;
+
+        .bp-RadioItem-check-icon {
+            fill: $white;
+        }
+
+        .bp-RadioItem-value {
+            color: $white;
+        }
+    }
+}
+
+.bp-RadioItem-check {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.bp-RadioItem-check-icon {
+    visibility: hidden;
+}
+
+.bp-RadioItem-value {
+    display: table-cell;
+    padding: 6px 6px 6px 10px;
+    color: $sunset-grey;
+    font-size: 12px;
+    text-align: left;
+    vertical-align: middle;
+}
