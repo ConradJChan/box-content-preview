@@ -1,0 +1,16 @@
+@import '../styles';
+
+.bp-SettingsToggle {
+    @include bp-Control;
+
+    &.bp-is-open {
+        .bp-SettingsToggle-icon {
+            transform: rotate(60deg);
+        }
+    }
+}
+
+.bp-SettingsToggle-icon {
+    transform: rotate(0);
+    transition: transform 300ms ease;
+}

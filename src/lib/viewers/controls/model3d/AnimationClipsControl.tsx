@@ -20,26 +20,29 @@ export default function AnimationClipsControl({
     currentAnimationClipId,
     onAnimationClipSelect,
 }: Props): JSX.Element {
+    const containerRef = React.useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = React.useState(false);
 
-    const handleMouseDown = (event: React.SyntheticEvent<HTMLDivElement>): void => {
-        event.preventDefault();
-        event.stopPropagation();
-    };
-    const handleToggle = (): void => {
-        setIsOpen(!isOpen);
-    };
+    const handleToggle = (): void => setIsOpen(!isOpen);
 
     React.useEffect(() => {
-        const handleDocumentMouseDown = (): void => setIsOpen(false);
+        const handleDocumentClick = ({ target }: MouseEvent): void => {
+            const { current: settingsRef } = containerRef;
 
-        document.addEventListener('mousedown', handleDocumentMouseDown);
+            if (settingsRef && settingsRef.contains(target)) {
+                return;
+            }
 
-        return (): void => document.removeEventListener('mousedown', handleDocumentMouseDown);
-    }, []);
+            setIsOpen(false);
+        };
+
+        document.addEventListener('click', handleDocumentClick);
+
+        return (): void => document.removeEventListener('click', handleDocumentClick);
+    }, [containerRef]);
 
     return (
-        <div className="bp-AnimationClipsControl" onMouseDown={handleMouseDown} role="button" tabIndex="-1">
+        <div ref={containerRef} className="bp-AnimationClipsControl">
             <AnimationClipsToggle onClick={handleToggle} />
             <AnimationClipsFlyout
                 animationClips={animationClips}
