@@ -46,6 +46,16 @@ class Model3DViewer extends Box3DViewer {
     /** @property {boolean} - Boolean indicating whether the animation is playihng */
     isAnimationPlaying = false;
 
+    renderGrid = DEFAULT_RENDER_GRID;
+
+    renderMode = RENDER_MODE_LIT;
+
+    renderSkeletons = false;
+
+    renderWireframes = false;
+
+    useReactControls = false;
+
     /** @inheritdoc */
     constructor(option) {
         super(option);
@@ -398,6 +408,11 @@ class Model3DViewer extends Box3DViewer {
      */
     handleShowSkeletons(visible) {
         this.renderer.setSkeletonsVisible(visible);
+
+        if (this.controls && this.getViewerOption('useReactControls')) {
+            this.renderSkeletons = visible;
+            this.renderUI();
+        }
     }
 
     /**
@@ -409,6 +424,11 @@ class Model3DViewer extends Box3DViewer {
      */
     handleShowWireframes(visible) {
         this.renderer.setWireframesVisible(visible);
+
+        if (this.controls && this.getViewerOption('useReactControls')) {
+            this.renderWireframes = visible;
+            this.renderUI();
+        }
     }
 
     /**
@@ -420,6 +440,11 @@ class Model3DViewer extends Box3DViewer {
      */
     handleShowGrid(visible) {
         this.renderer.setGridVisible(visible);
+
+        if (this.controls && this.getViewerOption('useReactControls')) {
+            this.renderGrid = visible;
+            this.renderUI();
+        }
     }
 
     renderUI() {
@@ -430,12 +455,23 @@ class Model3DViewer extends Box3DViewer {
         this.controls.render(
             <Model3DControlsNew
                 animationClips={this.animationClips}
+                cameraProjection={this.projection}
                 currentAnimationClipId={this.renderer.getAnimationClip()}
                 isPlaying={this.isAnimationPlaying}
                 onAnimationClipSelect={this.handleSelectAnimationClip}
+                onCameraProjectionChange={this.handleSetCameraProjection}
                 onFullscreenToggle={this.toggleFullscreen}
                 onPlayPause={this.handleToggleAnimation}
+                onRenderModeChange={this.handleSetRenderMode}
                 onReset={this.handleReset}
+                onRotateOnAxisChange={this.handleRotateOnAxis}
+                onShowGridToggle={this.handleShowGrid}
+                onShowSkeletonsToggle={this.handleShowSkeletons}
+                onShowWireframesToggle={this.handleShowWireframes}
+                renderMode={this.renderMode}
+                showGrid={this.renderGrid}
+                showSkeletons={this.renderSkeletons}
+                showWireframes={this.renderWireframes}
             />,
         );
     }
